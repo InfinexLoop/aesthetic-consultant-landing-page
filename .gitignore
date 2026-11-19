@@ -1,0 +1,44 @@
+# Local references and visual review
+/references/
+/screenshots/
+/test-results/
+/playwright-report/
+/coverage/
+/.stage2-*
+/.refine-*
+/.capability-corners-*
+/.corner-*
+/.hero-*
+
+# OS and editor files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Environment files and credentials
+.env
+.env.*
+*.env
+*.env.*
+.netrc
+.npmrc
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*.json
+service-account*.json
+secrets/
+
+# Dependencies, output, and temporary files
+node_modules
+dist/
+build/
+.cache/
+.vite/
+tmp/
+*.tmp
+*.log
