@@ -24,6 +24,7 @@
       --beige: #F3E9D9;
       --pearl: #E8EFFB;
       --ocean-highlight: #23547A;
+      --gold-accent: #8A652D;
       --gold-ink: color-mix(in srgb, var(--gold-dark) 45%, var(--navy));
       --gold-shadow: color-mix(in srgb, var(--gold-dark) 65%, var(--navy));
       --font-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
@@ -35,7 +36,7 @@
 
     *, *::before, *::after { box-sizing: border-box; }
     html, body { margin: 0; overflow-x: clip; }
-    body { font-family: var(--font-body); color: var(--navy); background: var(--ivory); }
+    body { font-family: var(--font-body); color: var(--navy); background: var(--white); }
     a { color: inherit; text-decoration: none; }
     button { font: inherit; }
     [hidden] { display: none !important; }
@@ -51,42 +52,13 @@
     }
 
     .hero {
-      --navy-warm: color-mix(in srgb, var(--navy) var(--navy-ink, 100%), black);
-      --ink: var(--navy-warm);
-      --inverse-ink: var(--white);
-      --headline-ink: var(--navy-warm);
-      --support-ink: var(--navy-warm);
-      --intro-ink: var(--navy-warm);
-      --light-support-ink: color-mix(in srgb, var(--white), var(--pearl) var(--pearl-ink, 100%));
-      --cta-background: var(--navy);
-      --cta-hover: var(--ocean);
-      --cta-ink: var(--white);
-      --hairline: color-mix(in srgb, var(--ink) 25%, transparent);
-      --control-border: color-mix(in srgb, var(--ink) 62%, transparent);
+      --hairline: color-mix(in srgb, var(--navy) 25%, transparent);
       position: relative;
       isolation: isolate;
       display: flex;
       flex-direction: column;
       min-height: 100svh;
       color: var(--navy);
-      color: var(--ink);
-    }
-
-    .hero[data-light-chrome] {
-      --ink: var(--white);
-      --inverse-ink: var(--navy);
-    }
-
-    .hero[data-light-copy] {
-      --headline-ink: color-mix(in srgb, var(--white), var(--gold) var(--grow-ink, 0%));
-      --support-ink: var(--light-support-ink);
-    }
-
-    .hero[data-light-details] {
-      --intro-ink: var(--light-support-ink);
-      --cta-background: var(--gold);
-      --cta-hover: var(--gold-light);
-      --cta-ink: var(--navy);
     }
 
     .atmosphere, .wash, .grain {
@@ -104,34 +76,41 @@
       background:
         radial-gradient(ellipse at 76% 32%, var(--white), transparent 38%),
         radial-gradient(ellipse at 98% 86%, var(--beige), transparent 43%),
-        linear-gradient(135deg, var(--ivory), var(--gold-light));
+        linear-gradient(115deg, var(--ivory) 20% 40%, var(--gold-light) 100%);
     }
     .wash[data-phase="design"] {
       background:
         radial-gradient(ellipse at 72% 38%, var(--ivory), transparent 39%),
         radial-gradient(ellipse at 91% 86%, var(--gold-dark), transparent 59%),
-        linear-gradient(135deg, var(--gold-light), var(--gold) 56%, var(--gold-dark));
+        linear-gradient(115deg, var(--ivory) 10%, var(--gold-light) 54%, var(--gold-dark) 100%);
     }
     .wash[data-phase="launch"] {
-      --copy-wash: color-mix(in srgb, var(--ocean-highlight) 12%, transparent);
+      --copy-wash: #D1DFEB;
+      --nav-wash: var(--pearl);
       background:
         radial-gradient(ellipse 49% 56% at 87% 81%, var(--ocean-highlight) 0%, transparent 84%),
-        radial-gradient(ellipse 40% 51% at 20% 105%, var(--navy) 0%, transparent 83%),
-        linear-gradient(135deg, var(--ocean) 0%, color-mix(in srgb, var(--ocean), var(--ocean-highlight) 45%) 56%, var(--ocean-highlight) 100%);
+        radial-gradient(ellipse 40% 51% at 20% 105%, color-mix(in srgb, var(--ocean) 55%, transparent) 0%, transparent 83%),
+        linear-gradient(105deg, var(--pearl) 8%, var(--copy-wash) 48%, var(--ocean-highlight) 83%, var(--ocean) 100%);
     }
     .wash[data-phase="grow"] {
-      --copy-wash: color-mix(in srgb, var(--ocean) 14%, transparent);
+      --copy-wash: #D9DFE7;
+      --nav-wash: var(--ivory);
       background:
         radial-gradient(ellipse 53% 62% at 86% 80%, var(--ocean) 0%, transparent 86%),
-        radial-gradient(ellipse 45% 50% at 18% 104%, var(--navy) 0%, transparent 83%),
-        linear-gradient(130deg, var(--navy) 0%, var(--navy) 57%, var(--ocean) 100%);
+        radial-gradient(ellipse 45% 50% at 18% 104%, color-mix(in srgb, var(--navy) 60%, transparent) 0%, transparent 83%),
+        linear-gradient(105deg, var(--ivory) 8%, var(--copy-wash) 46%, var(--ocean) 80%, var(--navy) 100%);
     }
-    /* The copy wash fades with its existing gradient layer. */
+    /* Lighten the navigation, motion control, and copy within each dark layer. */
     .wash:is([data-phase="launch"], [data-phase="grow"])::before {
       content: "";
       position: absolute;
       inset: 0;
+      --nav-wash-layer: linear-gradient(to bottom, var(--nav-wash) 6rem, transparent 14rem);
+      --control-wash: color-mix(in srgb, var(--copy-wash) 65%, var(--ocean-highlight));
+      --control-wash-layer: radial-gradient(ellipse 24% 34% at 95% 68%, var(--control-wash), transparent 100%);
       background:
+        var(--nav-wash-layer),
+        var(--control-wash-layer),
         radial-gradient(
           ellipse var(--copy-wash-radius, 54%) 39% at 12% var(--copy-wash-center, 49%),
           var(--copy-wash) 0% 54%,
@@ -191,27 +170,18 @@
       transition: background-color .2s var(--ease-out), color .2s var(--ease-out),
         border-color .2s var(--ease-out), transform .2s var(--ease-out);
     }
-    .nav-contact { padding-inline: 1.25rem; border-color: var(--control-border); }
-
-    /* Change foreground and surface together when the crossfade changes polarity. */
-    .hero[data-color-crossfade] :is(.nav-contact, .consultation, .motion-control) {
-      transition-property: transform;
-    }
+    .nav-contact { padding-inline: 1.25rem; }
 
     :where(a, button):focus-visible {
-      outline: 2px solid var(--ink, var(--navy));
+      outline: 2px solid var(--navy);
       outline-offset: 4px;
     }
-    .consultation:focus-visible { outline-color: var(--intro-ink); }
-
     @media (hover: hover) {
       .nav-contact:hover, .motion-control:hover {
-        background: color-mix(in srgb, var(--ink) 12%, transparent);
-        border-color: var(--ink);
+        background: color-mix(in srgb, var(--navy) 12%, transparent);
       }
       .consultation:hover {
-        background: var(--cta-hover);
-        border-color: var(--cta-hover);
+        background: var(--ocean);
         transform: translateY(-2px);
       }
     }
@@ -228,9 +198,7 @@
     }
 
     .copy { grid-area: copy; min-width: 0; }
-    .descriptor { color: var(--support-ink); }
-    .intro { color: var(--intro-ink); }
-    .heading { grid-area: heading; min-width: 0; position: relative; z-index: 1; color: var(--headline-ink); }
+    .heading { grid-area: heading; min-width: 0; position: relative; z-index: 1; }
     .descriptor {
       display: flex;
       align-items: center;
@@ -282,9 +250,9 @@
     .consultation {
       min-height: 3.5rem;
       padding: .75rem 1.65rem;
-      color: var(--cta-ink);
-      background: var(--cta-background);
-      border-color: var(--cta-background);
+      color: var(--white);
+      background: var(--navy);
+      border-color: var(--navy);
       font-size: .9375rem;
       font-weight: 700;
     }
@@ -302,14 +270,14 @@
     .art-orbit {
       position: absolute;
       inset: 12%;
-      border: 1px solid color-mix(in srgb, var(--ink) 17%, transparent);
+      border: 1px solid color-mix(in srgb, var(--navy) 17%, transparent);
       border-radius: 50%;
     }
     .art-orbit::before {
       content: "";
       position: absolute;
       inset: 8%;
-      border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--navy) 10%, transparent);
       border-radius: inherit;
     }
     .art-orbit::after {
@@ -319,9 +287,9 @@
       right: 20%;
       width: .5rem;
       height: .5rem;
-      border: 1px solid var(--ink);
+      border: 1px solid var(--navy);
       border-radius: 50%;
-      background: var(--inverse-ink);
+      background: var(--white);
     }
     .sculpture {
       position: absolute;
@@ -343,7 +311,6 @@
       padding: 0;
       color: inherit;
       background: transparent;
-      border-color: var(--control-border);
       cursor: pointer;
     }
     .motion-control svg {
@@ -361,10 +328,10 @@
       isolation: isolate;
       padding-block: .875rem clamp(1.6rem, 4.2vh, 2.5rem);
       color: var(--navy);
-      background: var(--white);
+      background: var(--beige);
     }
 
-    /* Use the Industries surface beneath the rounded beige layer. */
+    /* Use the Industries surface beneath the rounded ivory layer. */
     .capabilities > .shell::before {
       content: "";
       position: absolute;
@@ -452,12 +419,16 @@
 
     @media (max-width: 760px) {
       .wash:is([data-phase="launch"], [data-phase="grow"])::before {
+        --nav-wash-layer: linear-gradient(to bottom, var(--nav-wash) 7.5rem, transparent 13.5rem);
+        --control-wash-layer: radial-gradient(ellipse 34% 26% at 92% 61%, var(--control-wash), transparent 100%);
         --copy-wash-stops:
           var(--copy-wash) 0% 55%,
           color-mix(in srgb, var(--copy-wash) 96%, transparent) 66%,
           color-mix(in srgb, var(--copy-wash) 37%, transparent) 87%,
           transparent 100%;
         background:
+          var(--nav-wash-layer),
+          var(--control-wash-layer),
           radial-gradient(
             ellipse 103% var(--heading-wash-radius, 15%) at 37% var(--heading-wash-center, 21%),
             var(--copy-wash-stops)
@@ -536,7 +507,7 @@
     .industries {
       padding-block: clamp(2.125rem, 5.2vw, 4.875rem);
       border-radius: 0 0 var(--surface-radius) var(--surface-radius);
-      background: var(--white);
+      background: var(--beige);
       text-align: center;
     }
 
@@ -649,7 +620,7 @@
     }
 
     .value-pillars li::before {
-      color: var(--gold-ink);
+      color: var(--gold-accent);
       font-size: .875rem;
       font-weight: 700;
     }
@@ -705,7 +676,7 @@
       stroke-linejoin: round;
     }
 
-    .expertise-icon { width: 2.5rem; height: 2.5rem; }
+    .expertise-icon { width: 2.5rem; height: 2.5rem; stroke: var(--gold-accent); }
     .expertise-grid h3 { margin-top: 1.125rem; min-height: 3.42em; }
     .expertise-grid p { min-height: 3.06em; }
 
@@ -719,7 +690,7 @@
     }
 
     .expertise-grid li + li { margin-top: .425rem; }
-    .expertise-grid li::marker { color: var(--gold-ink); }
+    .expertise-grid li::marker { color: var(--gold-accent); }
 
     .additional-services {
       margin: clamp(1.75rem, 3.5vw, 2.75rem) 0 0;
@@ -735,6 +706,7 @@
       --body-muted: var(--pearl);
       margin-bottom: clamp(3.25rem, 7vw, 6.25rem);
       padding-block: clamp(3.25rem, 6vw, 5.5rem);
+      border-radius: var(--surface-radius);
       background: var(--navy);
       color: var(--white);
     }
@@ -1021,6 +993,12 @@
         <stop offset=".64" stop-color="var(--gold-dark)"/>
         <stop offset="1" stop-color="var(--gold-shadow)"/>
       </radialGradient>
+      <radialGradient id="navy-glass" href="#blue-glass">
+        <stop offset="0" stop-color="var(--pearl)"/>
+        <stop offset=".31" stop-color="var(--ocean-highlight)"/>
+        <stop offset=".64" stop-color="var(--ocean)"/>
+        <stop offset="1" stop-color="var(--navy)"/>
+      </radialGradient>
       <radialGradient id="glint" cx=".32" cy=".22" r=".52">
         <stop offset="0" stop-color="var(--white)" stop-opacity=".9"/>
         <stop offset="1" stop-color="var(--white)" stop-opacity="0"/>
@@ -1136,17 +1114,17 @@
             <svg viewBox="0 0 460 440">
               <ellipse cx="237" cy="387" rx="132" ry="28" fill="url(#art-shadow)"/>
               <g transform="translate(54 52) scale(.79) rotate(-70 226 336)">
-                <use href="#leaf-form" transform="translate(5 16)" fill="url(#edge)" stroke="url(#edge)" stroke-width="7"/>
-                <use href="#leaf-form" fill="url(#gold-glass)" stroke="url(#rim)" stroke-width="2"/>
-                <path d="M226 334 Q239 216 342 92 Q288 159 259 205 Q238 252 226 334Z" fill="url(#silver)" opacity=".86"/>
+                <use href="#leaf-form" transform="translate(5 16)" fill="url(#ocean-edge)" stroke="url(#ocean-edge)" stroke-width="7"/>
+                <use href="#leaf-form" fill="url(#navy-glass)" stroke="url(#ocean-rim)" stroke-width="2"/>
+                <path d="M226 334 Q239 216 342 92 Q288 159 259 205 Q238 252 226 334Z" fill="url(#ocean-silver)" opacity=".86"/>
               </g>
               <g transform="translate(-7 -23) rotate(12 226 335)">
-                <use href="#leaf-form" transform="translate(8 14)" fill="url(#edge)" stroke="url(#edge)" stroke-width="6"/>
-                <use href="#leaf-form" fill="url(#pearl)" stroke="url(#rim)" stroke-width="2.5"/>
-                <path d="M227 332 C237 256 274 166 342 92 C307 120 275 134 238 150 C181 180 176 256 227 332Z" fill="url(#gold-glass)" opacity=".8"/>
-                <path d="M227 332 C239 265 271 171 341 93" fill="none" stroke="url(#rim)" stroke-width="2.1" opacity=".82"/>
+                <use href="#leaf-form" transform="translate(8 14)" fill="url(#ocean-edge)" stroke="url(#ocean-edge)" stroke-width="6"/>
+                <use href="#leaf-form" fill="url(#blue-glass)" stroke="url(#ocean-rim)" stroke-width="2.5"/>
+                <path d="M227 332 C237 256 274 166 342 92 C307 120 275 134 238 150 C181 180 176 256 227 332Z" fill="url(#navy-glass)" opacity=".8"/>
+                <path d="M227 332 C239 265 271 171 341 93" fill="none" stroke="url(#ocean-rim)" stroke-width="2.1" opacity=".82"/>
               </g>
-              <path d="M211 341 Q227 303 245 287" fill="none" stroke="url(#rim)" stroke-width="7" stroke-linecap="round"/>
+              <path d="M211 341 Q227 303 245 287" fill="none" stroke="url(#ocean-rim)" stroke-width="7" stroke-linecap="round"/>
             </svg>
           </div>
 
@@ -1379,11 +1357,8 @@
       const pauseMark = motionControl.querySelector(".pause-mark");
       const playMark = motionControl.querySelector(".play-mark");
       const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
-      const stackedCopy = matchMedia("(max-width: 760px)");
 
       const phases = ["design", "launch", "grow", "plan"].map((name) => ({
-        dark: name === "launch" || name === "grow",
-        goldHeadline: name === "grow",
         wash: hero.querySelector(`.wash[data-phase="${name}"]`),
         word: hero.querySelector(`.word[data-phase="${name}"]`),
         icon: hero.querySelector(`.sculpture[data-phase="${name}"]`)
@@ -1404,24 +1379,6 @@
         const exitWord = easeOut(clamp((elapsed - .03) / .42));
         const enterIcon = easeOut(clamp((elapsed - .10) / .50));
         const exitIcon = easeOut(clamp((elapsed - .09) / .42));
-
-        const currentTheme = phases[index];
-        const nextTheme = phases[next];
-        const darkMix = (currentTheme.dark ? 1 - wash : 0) + (nextTheme.dark ? wash : 0);
-        const goldMix = (currentTheme.goldHeadline ? 1 - wash : 0) + (nextTheme.goldHeadline ? wash : 0);
-        const returningToLight = currentTheme.dark && !nextTheme.dark;
-        const detailsSwitch = stackedCopy.matches
-          ? (returningToLight ? .54 : .60)
-          : (returningToLight ? .535 : .57);
-
-        // Keep readable foreground pairs as the existing background layers crossfade.
-        hero.toggleAttribute("data-color-crossfade", currentTheme.dark !== nextTheme.dark && elapsed > 0);
-        hero.toggleAttribute("data-light-chrome", darkMix >= .54);
-        hero.toggleAttribute("data-light-copy", darkMix >= (returningToLight ? .54 : .56));
-        hero.toggleAttribute("data-light-details", darkMix >= detailsSwitch);
-        hero.style.setProperty("--navy-ink", `${100 - 86 * smooth(clamp((darkMix - .30) / .18))}%`);
-        hero.style.setProperty("--grow-ink", `${100 * goldMix * smooth(clamp((darkMix - .52) / .30))}%`);
-        hero.style.setProperty("--pearl-ink", `${100 * smooth(clamp((darkMix - .61) / .25))}%`);
 
         phases.forEach((phase, position) => {
           const current = position === index;
