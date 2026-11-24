@@ -14,11 +14,18 @@
   <style>
     /* Hallmark · marquee hero · soft editorial · navy anchor */
     :root {
-      --navy: #2F4156;
-      --teal: #567C8D;
-      --sky: #C8D9E6;
-      --beige: #F5EFEB;
+      --navy: #01172F;
+      --ocean: #0B2F52;
+      --gold: #E9BF6F;
+      --ivory: #FBEFDD;
       --white: #FFFFFF;
+      --gold-dark: #DFB05A;
+      --gold-light: #EACF92;
+      --beige: #F3E9D9;
+      --pearl: #E8EFFB;
+      --ocean-highlight: #23547A;
+      --gold-ink: color-mix(in srgb, var(--gold-dark) 45%, var(--navy));
+      --gold-shadow: color-mix(in srgb, var(--gold-dark) 65%, var(--navy));
       --font-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
       --font-body: "DM Sans", "Helvetica Neue", Arial, sans-serif;
       --gutter: clamp(1.25rem, 5.55vw, 6rem);
@@ -28,7 +35,7 @@
 
     *, *::before, *::after { box-sizing: border-box; }
     html, body { margin: 0; overflow-x: clip; }
-    body { font-family: var(--font-body); color: var(--navy); background: var(--beige); }
+    body { font-family: var(--font-body); color: var(--navy); background: var(--ivory); }
     a { color: inherit; text-decoration: none; }
     button { font: inherit; }
     [hidden] { display: none !important; }
@@ -44,10 +51,18 @@
     }
 
     .hero {
-      --light-ink: 0%;
-      --ink: color-mix(in srgb, var(--navy), var(--white) var(--light-ink));
-      --inverse-ink: color-mix(in srgb, var(--white), var(--navy) var(--light-ink));
+      --navy-warm: color-mix(in srgb, var(--navy) var(--navy-ink, 100%), black);
+      --ink: var(--navy-warm);
+      --inverse-ink: var(--white);
+      --headline-ink: var(--navy-warm);
+      --support-ink: var(--navy-warm);
+      --intro-ink: var(--navy-warm);
+      --light-support-ink: color-mix(in srgb, var(--white), var(--pearl) var(--pearl-ink, 100%));
+      --cta-background: var(--navy);
+      --cta-hover: var(--ocean);
+      --cta-ink: var(--white);
       --hairline: color-mix(in srgb, var(--ink) 25%, transparent);
+      --control-border: color-mix(in srgb, var(--ink) 62%, transparent);
       position: relative;
       isolation: isolate;
       display: flex;
@@ -57,13 +72,30 @@
       color: var(--ink);
     }
 
+    .hero[data-light-chrome] {
+      --ink: var(--white);
+      --inverse-ink: var(--navy);
+    }
+
+    .hero[data-light-copy] {
+      --headline-ink: color-mix(in srgb, var(--white), var(--gold) var(--grow-ink, 0%));
+      --support-ink: var(--light-support-ink);
+    }
+
+    .hero[data-light-details] {
+      --intro-ink: var(--light-support-ink);
+      --cta-background: var(--gold);
+      --cta-hover: var(--gold-light);
+      --cta-ink: var(--navy);
+    }
+
     .atmosphere, .wash, .grain {
       position: absolute;
       inset: 0;
       pointer-events: none;
     }
 
-    .atmosphere { z-index: -1; background: var(--beige); }
+    .atmosphere { z-index: -1; background: var(--ivory); }
     .wash {
       opacity: 0;
       background-repeat: no-repeat;
@@ -72,27 +104,27 @@
       background:
         radial-gradient(ellipse at 76% 32%, var(--white), transparent 38%),
         radial-gradient(ellipse at 98% 86%, var(--beige), transparent 43%),
-        var(--sky);
+        linear-gradient(135deg, var(--ivory), var(--gold-light));
     }
     .wash[data-phase="design"] {
       background:
-        radial-gradient(ellipse at 72% 38%, var(--white), transparent 39%),
-        radial-gradient(ellipse at 91% 86%, var(--sky), transparent 59%),
-        var(--beige);
+        radial-gradient(ellipse at 72% 38%, var(--ivory), transparent 39%),
+        radial-gradient(ellipse at 91% 86%, var(--gold-dark), transparent 59%),
+        linear-gradient(135deg, var(--gold-light), var(--gold) 56%, var(--gold-dark));
     }
     .wash[data-phase="launch"] {
-      --copy-wash: color-mix(in srgb, var(--beige) 62%, transparent);
+      --copy-wash: color-mix(in srgb, var(--ocean-highlight) 12%, transparent);
       background:
-        radial-gradient(ellipse 49% 56% at 87% 81%, #A0BEC7 0%, transparent 84%),
-        radial-gradient(ellipse 40% 51% at 20% 105%, #37596F 0%, transparent 83%),
-        linear-gradient(135deg, #668F9F 0%, #567C8D 56%, #3E697F 100%);
+        radial-gradient(ellipse 49% 56% at 87% 81%, var(--ocean-highlight) 0%, transparent 84%),
+        radial-gradient(ellipse 40% 51% at 20% 105%, var(--navy) 0%, transparent 83%),
+        linear-gradient(135deg, var(--ocean) 0%, color-mix(in srgb, var(--ocean), var(--ocean-highlight) 45%) 56%, var(--ocean-highlight) 100%);
     }
     .wash[data-phase="grow"] {
-      --copy-wash: color-mix(in srgb, var(--sky) 80%, transparent);
+      --copy-wash: color-mix(in srgb, var(--ocean) 14%, transparent);
       background:
-        radial-gradient(ellipse 53% 62% at 86% 80%, #607C96 0%, transparent 86%),
-        radial-gradient(ellipse 45% 50% at 18% 104%, #1F354C 0%, transparent 83%),
-        linear-gradient(130deg, #3C5169 0%, #2F4156 57%, #233449 100%);
+        radial-gradient(ellipse 53% 62% at 86% 80%, var(--ocean) 0%, transparent 86%),
+        radial-gradient(ellipse 45% 50% at 18% 104%, var(--navy) 0%, transparent 83%),
+        linear-gradient(130deg, var(--navy) 0%, var(--navy) 57%, var(--ocean) 100%);
     }
     /* The copy wash fades with its existing gradient layer. */
     .wash:is([data-phase="launch"], [data-phase="grow"])::before {
@@ -159,24 +191,27 @@
       transition: background-color .2s var(--ease-out), color .2s var(--ease-out),
         border-color .2s var(--ease-out), transform .2s var(--ease-out);
     }
-    .nav-contact { padding-inline: 1.25rem; border-color: var(--hairline); }
+    .nav-contact { padding-inline: 1.25rem; border-color: var(--control-border); }
+
+    /* Change foreground and surface together when the crossfade changes polarity. */
+    .hero[data-color-crossfade] :is(.nav-contact, .consultation, .motion-control) {
+      transition-property: transform;
+    }
 
     :where(a, button):focus-visible {
-      outline: 2px solid var(--ink);
+      outline: 2px solid var(--ink, var(--navy));
       outline-offset: 4px;
     }
-    .consultation:focus-visible { outline-color: var(--navy); }
+    .consultation:focus-visible { outline-color: var(--intro-ink); }
 
     @media (hover: hover) {
       .nav-contact:hover, .motion-control:hover {
-        background: var(--ink);
+        background: color-mix(in srgb, var(--ink) 12%, transparent);
         border-color: var(--ink);
-        color: var(--inverse-ink);
       }
       .consultation:hover {
-        background: transparent;
-        border-color: var(--navy);
-        color: var(--navy);
+        background: var(--cta-hover);
+        border-color: var(--cta-hover);
         transform: translateY(-2px);
       }
     }
@@ -193,8 +228,9 @@
     }
 
     .copy { grid-area: copy; min-width: 0; }
-    .heading, .intro { color: var(--navy); }
-    .heading { grid-area: heading; min-width: 0; position: relative; z-index: 1; }
+    .descriptor { color: var(--support-ink); }
+    .intro { color: var(--intro-ink); }
+    .heading { grid-area: heading; min-width: 0; position: relative; z-index: 1; color: var(--headline-ink); }
     .descriptor {
       display: flex;
       align-items: center;
@@ -246,9 +282,9 @@
     .consultation {
       min-height: 3.5rem;
       padding: .75rem 1.65rem;
-      color: var(--inverse-ink);
-      background: var(--ink);
-      border-color: var(--ink);
+      color: var(--cta-ink);
+      background: var(--cta-background);
+      border-color: var(--cta-background);
       font-size: .9375rem;
       font-weight: 700;
     }
@@ -307,7 +343,7 @@
       padding: 0;
       color: inherit;
       background: transparent;
-      border-color: var(--hairline);
+      border-color: var(--control-border);
       cursor: pointer;
     }
     .motion-control svg {
@@ -335,7 +371,7 @@
       inset: 0;
       z-index: -1;
       border-radius: 0 0 var(--surface-radius) var(--surface-radius);
-      background: var(--beige);
+      background: var(--ivory);
       pointer-events: none;
     }
     /* Match the strip at the two corners without changing the gradient canvas. */
@@ -348,7 +384,7 @@
       background: radial-gradient(
         circle var(--surface-radius) at var(--corner-origin) 0,
         transparent calc(var(--surface-radius) - .65px),
-        var(--beige) var(--surface-radius)
+        var(--ivory) var(--surface-radius)
       );
       pointer-events: none;
     }
@@ -363,7 +399,7 @@
       width: min(50vw, 34rem);
       height: clamp(1.5rem, 3.6vw, 3.125rem);
       transform: translateX(-50%);
-      fill: var(--beige);
+      fill: var(--ivory);
       pointer-events: none;
     }
     .capabilities h2 {
@@ -399,7 +435,7 @@
       width: 1.75rem;
       height: 1.75rem;
       fill: none;
-      stroke: var(--teal);
+      stroke: var(--gold-ink);
       stroke-width: 1.35;
       stroke-linecap: round;
       stroke-linejoin: round;
@@ -480,13 +516,14 @@
     /* Body layout from the approved design reference. */
     .landing-body, .site-footer {
       --panel-radius: clamp(1.875rem, 5.2vw, 5rem);
-      --body-rule: color-mix(in srgb, var(--sky) 76%, var(--navy));
-      --body-muted: color-mix(in srgb, var(--navy) 84%, var(--teal));
+      --body-rule: color-mix(in srgb, var(--gold-dark) 55%, var(--beige));
+      --body-muted: var(--navy);
       --panel-inset: clamp(1.25rem, 5vw, 4.5rem);
     }
 
     .landing-body section[id] { scroll-margin-block-start: clamp(1rem, 4vw, 3rem); }
-    .landing-body a:focus-visible, .site-footer a:focus-visible { outline-color: var(--navy); }
+    .landing-body a:focus-visible { outline-color: var(--navy); }
+    .site-footer a:focus-visible { outline-color: var(--gold); }
 
     .body-label {
       margin: 0;
@@ -540,6 +577,7 @@
     }
 
     .about-heading .body-label {
+      color: var(--ocean);
       display: flex;
       align-items: center;
       gap: .75rem;
@@ -549,7 +587,7 @@
     .about-heading .body-label::before {
       content: "";
       width: 1.75rem;
-      border-block-start: 1px solid var(--teal);
+      border-block-start: 1px solid var(--gold-dark);
     }
 
     .editorial-title, .section-title {
@@ -611,7 +649,7 @@
     }
 
     .value-pillars li::before {
-      color: var(--body-muted);
+      color: var(--gold-ink);
       font-size: .875rem;
       font-weight: 700;
     }
@@ -661,7 +699,7 @@
       width: 2rem;
       height: 2rem;
       fill: none;
-      stroke: var(--teal);
+      stroke: var(--gold-ink);
       stroke-width: 1.45;
       stroke-linecap: round;
       stroke-linejoin: round;
@@ -681,7 +719,7 @@
     }
 
     .expertise-grid li + li { margin-top: .425rem; }
-    .expertise-grid li::marker { color: var(--teal); }
+    .expertise-grid li::marker { color: var(--gold-ink); }
 
     .additional-services {
       margin: clamp(1.75rem, 3.5vw, 2.75rem) 0 0;
@@ -693,9 +731,12 @@
     }
 
     .approach {
+      --body-rule: color-mix(in srgb, var(--gold) 42%, transparent);
+      --body-muted: var(--pearl);
       margin-bottom: clamp(3.25rem, 7vw, 6.25rem);
       padding-block: clamp(3.25rem, 6vw, 5.5rem);
-      background: color-mix(in srgb, var(--sky) 42%, var(--beige));
+      background: var(--navy);
+      color: var(--white);
     }
 
     .approach-steps {
@@ -706,7 +747,7 @@
     .approach-steps li { padding-top: 1.375rem; }
 
     .approach-steps li::before {
-      color: var(--teal);
+      color: var(--gold);
       font-family: var(--font-display);
       font-size: clamp(2.5rem, 4.3vw, 3.875rem);
       font-weight: 650;
@@ -738,7 +779,8 @@
     .contact-panel {
       padding: clamp(3rem, 6.2vw, 6rem) var(--panel-inset) clamp(2.75rem, 6vw, 5.5rem);
       border-radius: var(--panel-radius) var(--panel-radius) 0 0;
-      background: var(--white);
+      background: var(--ivory);
+      background-image: linear-gradient(to bottom, color-mix(in srgb, var(--gold-light) 18%, transparent), transparent 40%);
       text-align: center;
     }
 
@@ -749,7 +791,7 @@
       height: 3.5rem;
       margin: 0 auto 1.25rem;
       border-radius: 50%;
-      background: color-mix(in srgb, var(--sky) 40%, var(--white));
+      background: color-mix(in srgb, var(--gold-light) 42%, var(--ivory));
     }
 
     .contact-mark svg { width: 1.6rem; height: 1.6rem; }
@@ -780,7 +822,7 @@
     }
 
     .contact-button-primary { background: var(--navy); color: var(--white); }
-    .contact-button-secondary { background: var(--white); color: var(--navy); }
+    .contact-button-secondary { background: var(--gold); color: var(--navy); }
 
     .contact-location {
       margin: 1.25rem 0 0;
@@ -791,11 +833,16 @@
     }
 
     .site-footer {
+      --body-rule: color-mix(in srgb, var(--gold) 38%, transparent);
+      --body-muted: var(--pearl);
       margin-block-end: clamp(1.5rem, 4vw, 3.5rem);
       padding: 0 var(--panel-inset) clamp(1.5rem, 3vw, 2.5rem);
       border-radius: 0 0 var(--panel-radius) var(--panel-radius);
-      background: var(--white);
+      background: var(--navy);
+      color: var(--pearl);
     }
+
+    .site-footer .wordmark { color: var(--gold); }
 
     .site-footer-inner {
       display: grid;
@@ -838,8 +885,8 @@
     .site-footer .copyright { margin: 0; }
 
     @media (hover: hover) {
-      .contact-button-primary:hover { background: var(--teal); border-color: var(--teal); }
-      .contact-button-secondary:hover { background: color-mix(in srgb, var(--sky) 42%, var(--white)); }
+      .contact-button-primary:hover { background: var(--ocean); border-color: var(--ocean); }
+      .contact-button-secondary:hover { background: var(--gold-light); }
       .footer-links a:hover { text-decoration-line: underline; }
     }
 
@@ -913,38 +960,66 @@
     <defs>
       <linearGradient id="edge" x1="0" y1="0" x2=".89" y2="1">
         <stop offset="0" stop-color="var(--white)"/>
-        <stop offset=".24" stop-color="var(--sky)"/>
-        <stop offset=".55" stop-color="var(--teal)"/>
-        <stop offset=".77" stop-color="var(--navy)"/>
-        <stop offset="1" stop-color="var(--teal)"/>
+        <stop offset=".24" stop-color="var(--gold-light)"/>
+        <stop offset=".55" stop-color="var(--gold-dark)"/>
+        <stop offset=".77" stop-color="var(--gold-shadow)"/>
+        <stop offset="1" stop-color="var(--gold-dark)"/>
       </linearGradient>
       <linearGradient id="rim" x1=".15" y1=".04" x2=".74" y2="1">
         <stop offset="0" stop-color="var(--white)"/>
-        <stop offset=".26" stop-color="var(--beige)"/>
-        <stop offset=".57" stop-color="var(--sky)"/>
-        <stop offset=".8" stop-color="var(--teal)"/>
-        <stop offset="1" stop-color="var(--sky)"/>
+        <stop offset=".26" stop-color="var(--ivory)"/>
+        <stop offset=".57" stop-color="var(--gold-light)"/>
+        <stop offset=".8" stop-color="var(--gold-dark)"/>
+        <stop offset="1" stop-color="var(--gold)"/>
       </linearGradient>
       <linearGradient id="silver" x1=".12" y1=".07" x2=".77" y2=".96">
-        <stop offset="0" stop-color="var(--teal)"/>
-        <stop offset=".22" stop-color="var(--sky)"/>
+        <stop offset="0" stop-color="var(--gold-dark)"/>
+        <stop offset=".22" stop-color="var(--gold-light)"/>
         <stop offset=".43" stop-color="var(--white)"/>
-        <stop offset=".53" stop-color="var(--beige)"/>
-        <stop offset=".74" stop-color="var(--sky)"/>
-        <stop offset="1" stop-color="var(--teal)"/>
+        <stop offset=".53" stop-color="var(--ivory)"/>
+        <stop offset=".74" stop-color="var(--gold)"/>
+        <stop offset="1" stop-color="var(--gold-dark)"/>
       </linearGradient>
       <radialGradient id="pearl" cx=".33" cy=".19" r=".91">
         <stop offset="0" stop-color="var(--white)"/>
-        <stop offset=".34" stop-color="var(--beige)"/>
-        <stop offset=".59" stop-color="var(--sky)"/>
-        <stop offset=".84" stop-color="var(--teal)"/>
-        <stop offset="1" stop-color="var(--navy)"/>
+        <stop offset=".34" stop-color="var(--gold-light)"/>
+        <stop offset=".59" stop-color="var(--gold)"/>
+        <stop offset=".84" stop-color="var(--gold-dark)"/>
+        <stop offset="1" stop-color="var(--gold-shadow)"/>
       </radialGradient>
       <radialGradient id="blue-glass" cx=".33" cy=".18" r=".88">
         <stop offset="0" stop-color="var(--white)"/>
-        <stop offset=".31" stop-color="var(--sky)"/>
-        <stop offset=".64" stop-color="var(--teal)"/>
-        <stop offset="1" stop-color="var(--navy)"/>
+        <stop offset=".31" stop-color="var(--pearl)"/>
+        <stop offset=".64" stop-color="var(--ocean-highlight)"/>
+        <stop offset="1" stop-color="var(--ocean)"/>
+      </radialGradient>
+      <linearGradient id="ocean-edge" href="#edge">
+        <stop offset="0" stop-color="var(--white)"/>
+        <stop offset=".24" stop-color="var(--pearl)"/>
+        <stop offset=".55" stop-color="var(--ocean-highlight)"/>
+        <stop offset=".77" stop-color="var(--navy)"/>
+        <stop offset="1" stop-color="var(--ocean)"/>
+      </linearGradient>
+      <linearGradient id="ocean-rim" href="#rim">
+        <stop offset="0" stop-color="var(--white)"/>
+        <stop offset=".26" stop-color="var(--pearl)"/>
+        <stop offset=".57" stop-color="var(--ocean-highlight)"/>
+        <stop offset=".8" stop-color="var(--ocean)"/>
+        <stop offset="1" stop-color="var(--ocean-highlight)"/>
+      </linearGradient>
+      <linearGradient id="ocean-silver" href="#silver">
+        <stop offset="0" stop-color="var(--ocean)"/>
+        <stop offset=".22" stop-color="var(--ocean-highlight)"/>
+        <stop offset=".43" stop-color="var(--pearl)"/>
+        <stop offset=".53" stop-color="var(--ocean-highlight)"/>
+        <stop offset=".74" stop-color="var(--ocean-highlight)"/>
+        <stop offset="1" stop-color="var(--ocean)"/>
+      </linearGradient>
+      <radialGradient id="gold-glass" href="#blue-glass">
+        <stop offset="0" stop-color="var(--ivory)"/>
+        <stop offset=".31" stop-color="var(--gold-light)"/>
+        <stop offset=".64" stop-color="var(--gold-dark)"/>
+        <stop offset="1" stop-color="var(--gold-shadow)"/>
       </radialGradient>
       <radialGradient id="glint" cx=".32" cy=".22" r=".52">
         <stop offset="0" stop-color="var(--white)" stop-opacity=".9"/>
@@ -1017,7 +1092,7 @@
                 <use href="#plan-form" fill="url(#silver)" fill-rule="evenodd" stroke="url(#rim)" stroke-width="2"/>
                 <ellipse cx="230" cy="213" rx="134" ry="123" fill="none" stroke="url(#rim)" stroke-width="1" opacity=".75"/>
                 <path d="M259 104 Q275 91 273 115 L262 234 Q261 242 254 248 L201 314 Q187 331 190 307 L204 199 Q205 191 211 183Z" fill="url(#edge)" transform="translate(2 8)"/>
-                <path d="M259 104 Q275 91 273 115 L262 234 Q261 242 254 248 L201 314 Q187 331 190 307 L204 199 Q205 191 211 183Z" fill="url(#blue-glass)" stroke="url(#rim)" stroke-width="1.5"/>
+                <path d="M259 104 Q275 91 273 115 L262 234 Q261 242 254 248 L201 314 Q187 331 190 307 L204 199 Q205 191 211 183Z" fill="url(#gold-glass)" stroke="url(#rim)" stroke-width="1.5"/>
                 <path d="M266 108 L233 218 L193 311 Q195 294 204 199 Q205 191 211 183Z" fill="url(#pearl)" opacity=".86"/>
                 <circle cx="233" cy="218" r="13" fill="url(#rim)" stroke="url(#silver)" stroke-width="3"/>
               </g>
@@ -1034,7 +1109,7 @@
                 <g clip-path="url(#design-clip)">
                   <path d="M232 62 C239 134 247 174 226 215 C202 244 167 250 67 212 C151 210 187 169 232 62Z" fill="url(#silver)"/>
                   <path d="M232 62 C254 131 267 177 226 215 C259 192 323 194 400 212 C360 168 280 183 232 62Z" fill="url(#glint)"/>
-                  <path d="M400 210 C329 216 268 208 226 215 C245 259 257 302 230 373 C268 320 272 265 352 241Z" fill="url(#blue-glass)" opacity=".69"/>
+                  <path d="M400 210 C329 216 268 208 226 215 C245 259 257 302 230 373 C268 320 272 265 352 241Z" fill="url(#gold-glass)" opacity=".69"/>
                   <path d="M230 372 C231 311 221 265 226 215 C194 245 145 239 67 211 C164 250 183 256 230 372Z" fill="url(#silver)" opacity=".74"/>
                   <path d="M231 75 C221 129 197 183 153 199 C128 208 98 209 75 211 M230 356 C247 287 233 239 227 216 C277 205 333 208 391 215" fill="none" stroke="url(#rim)" stroke-width="2" opacity=".79"/>
                   <ellipse cx="227" cy="206" rx="155" ry="110" fill="url(#glint)" opacity=".65"/>
@@ -1048,11 +1123,11 @@
             <svg viewBox="0 0 460 440">
               <ellipse cx="242" cy="390" rx="143" ry="31" fill="url(#art-shadow)"/>
               <g transform="rotate(31 230 215)">
-                <use href="#launch-form" transform="translate(9 16)" fill="url(#edge)" stroke="url(#edge)" stroke-width="5"/>
-                <use href="#launch-form" transform="translate(4 8)" fill="url(#silver)"/>
-                <use href="#launch-form" fill="url(#blue-glass)" stroke="url(#rim)" stroke-width="2.5"/>
-                <path d="M242 64 Q249 60 256 68 L377 182 Q385 191 378 198 L363 210 Q352 221 340 210 L260 139 L260 328 Q260 346 244 347 L228 347 Q206 346 206 329 L206 144 L119 217 Q109 221 103 213 L89 201 Q83 195 91 188Z" fill="url(#silver)" opacity=".65"/>
-                <path d="M247 68 L233 132 L233 344 M233 132 L106 215" fill="none" stroke="url(#rim)" stroke-width="2" opacity=".62"/>
+                <use href="#launch-form" transform="translate(9 16)" fill="url(#ocean-edge)" stroke="url(#ocean-edge)" stroke-width="5"/>
+                <use href="#launch-form" transform="translate(4 8)" fill="url(#ocean-silver)"/>
+                <use href="#launch-form" fill="url(#blue-glass)" stroke="url(#ocean-rim)" stroke-width="2.5"/>
+                <path d="M242 64 Q249 60 256 68 L377 182 Q385 191 378 198 L363 210 Q352 221 340 210 L260 139 L260 328 Q260 346 244 347 L228 347 Q206 346 206 329 L206 144 L119 217 Q109 221 103 213 L89 201 Q83 195 91 188Z" fill="url(#ocean-silver)" opacity=".65"/>
+                <path d="M247 68 L233 132 L233 344 M233 132 L106 215" fill="none" stroke="url(#ocean-rim)" stroke-width="2" opacity=".62"/>
               </g>
             </svg>
           </div>
@@ -1062,13 +1137,13 @@
               <ellipse cx="237" cy="387" rx="132" ry="28" fill="url(#art-shadow)"/>
               <g transform="translate(54 52) scale(.79) rotate(-70 226 336)">
                 <use href="#leaf-form" transform="translate(5 16)" fill="url(#edge)" stroke="url(#edge)" stroke-width="7"/>
-                <use href="#leaf-form" fill="url(#blue-glass)" stroke="url(#rim)" stroke-width="2"/>
+                <use href="#leaf-form" fill="url(#gold-glass)" stroke="url(#rim)" stroke-width="2"/>
                 <path d="M226 334 Q239 216 342 92 Q288 159 259 205 Q238 252 226 334Z" fill="url(#silver)" opacity=".86"/>
               </g>
               <g transform="translate(-7 -23) rotate(12 226 335)">
                 <use href="#leaf-form" transform="translate(8 14)" fill="url(#edge)" stroke="url(#edge)" stroke-width="6"/>
                 <use href="#leaf-form" fill="url(#pearl)" stroke="url(#rim)" stroke-width="2.5"/>
-                <path d="M227 332 C237 256 274 166 342 92 C307 120 275 134 238 150 C181 180 176 256 227 332Z" fill="url(#blue-glass)" opacity=".8"/>
+                <path d="M227 332 C237 256 274 166 342 92 C307 120 275 134 238 150 C181 180 176 256 227 332Z" fill="url(#gold-glass)" opacity=".8"/>
                 <path d="M227 332 C239 265 271 171 341 93" fill="none" stroke="url(#rim)" stroke-width="2.1" opacity=".82"/>
               </g>
               <path d="M211 341 Q227 303 245 287" fill="none" stroke="url(#rim)" stroke-width="7" stroke-linecap="round"/>
@@ -1304,9 +1379,11 @@
       const pauseMark = motionControl.querySelector(".pause-mark");
       const playMark = motionControl.querySelector(".play-mark");
       const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+      const stackedCopy = matchMedia("(max-width: 760px)");
 
-      const phases = ["design", "launch", "grow", "plan"].map((name, index) => ({
-        dark: index === 1 || index === 2,
+      const phases = ["design", "launch", "grow", "plan"].map((name) => ({
+        dark: name === "launch" || name === "grow",
+        goldHeadline: name === "grow",
         wash: hero.querySelector(`.wash[data-phase="${name}"]`),
         word: hero.querySelector(`.word[data-phase="${name}"]`),
         icon: hero.querySelector(`.sculpture[data-phase="${name}"]`)
@@ -1328,11 +1405,23 @@
         const enterIcon = easeOut(clamp((elapsed - .10) / .50));
         const exitIcon = easeOut(clamp((elapsed - .09) / .42));
 
-        const currentDark = Number(phases[index].dark);
-        const nextDark = Number(phases[next].dark);
-        const inkStart = currentDark ? .31 : .53;
-        const inkBlend = smooth(clamp((wash - inkStart) / .16));
-        hero.style.setProperty("--light-ink", `${100 * (currentDark + (nextDark - currentDark) * inkBlend)}%`);
+        const currentTheme = phases[index];
+        const nextTheme = phases[next];
+        const darkMix = (currentTheme.dark ? 1 - wash : 0) + (nextTheme.dark ? wash : 0);
+        const goldMix = (currentTheme.goldHeadline ? 1 - wash : 0) + (nextTheme.goldHeadline ? wash : 0);
+        const returningToLight = currentTheme.dark && !nextTheme.dark;
+        const detailsSwitch = stackedCopy.matches
+          ? (returningToLight ? .54 : .60)
+          : (returningToLight ? .535 : .57);
+
+        // Keep readable foreground pairs as the existing background layers crossfade.
+        hero.toggleAttribute("data-color-crossfade", currentTheme.dark !== nextTheme.dark && elapsed > 0);
+        hero.toggleAttribute("data-light-chrome", darkMix >= .54);
+        hero.toggleAttribute("data-light-copy", darkMix >= (returningToLight ? .54 : .56));
+        hero.toggleAttribute("data-light-details", darkMix >= detailsSwitch);
+        hero.style.setProperty("--navy-ink", `${100 - 86 * smooth(clamp((darkMix - .30) / .18))}%`);
+        hero.style.setProperty("--grow-ink", `${100 * goldMix * smooth(clamp((darkMix - .52) / .30))}%`);
+        hero.style.setProperty("--pearl-ink", `${100 * smooth(clamp((darkMix - .61) / .25))}%`);
 
         phases.forEach((phase, position) => {
           const current = position === index;
